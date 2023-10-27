@@ -1,0 +1,35 @@
+<mat-card class="example-card">
+    <form [formGroup]="addProjectForm" (ngSubmit)="onSubmitProjectData()">
+        <div class="row">
+            <h2 class="header">Add Project</h2>
+        </div>
+        <div class="row">
+            <mat-card-content>
+                    <div class="row">
+                        <div class="col">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Project ID</mat-label>
+                              <input matInput formControlName="projectId">
+                            </mat-form-field>
+                        </div>
+                        <div class="col">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Project Name</mat-label>
+                              <input matInput formControlName="projectName">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Project Description</mat-label>
+                            <input matInput formControlName="projectDescription">
+                          </mat-form-field>
+                        </div>
+                    </div>
+                   
+                <button class="btn" mat-raised-button color="primary">Add Project</button>
+            </mat-card-content>
+        </div>
+    </form>
+  </mat-card>
