@@ -32,8 +32,8 @@ module.exports = {
       name: "projectMFE",
       filename: "remoteEntry.js",
       exposes: {
-        "./homeModule": ".//src/app/home/home.module.ts",
-       // HomeModule: ".//src/app/home/home.module.ts",
+        //"./homeModule": ".//src/app/home/home.module.ts",
+       "HomeModule": ".//src/app/home/home.module.ts",
       },
 
       // For hosts (please adjust)

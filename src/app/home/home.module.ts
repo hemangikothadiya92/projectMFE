@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [HomeComponent, AddProjectComponent, AssignProjectComponent],
@@ -29,6 +30,7 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     RouterModule.forChild([{ path: '', component: AddProjectComponent }, { path: 'assign-project', component: AssignProjectComponent }]),
   ],
 })

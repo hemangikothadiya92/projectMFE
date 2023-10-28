@@ -1,3 +1,19 @@
-<p>assign-project works!</p>
-
-
+<form [formGroup]="assignProjectForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+        <mat-label>Select Employee ID</mat-label>
+        <mat-select formControlName="employeeId" name="employeeId">
+          <mat-option *ngFor="let employee of employeeData" [value]="employee.id">
+            {{employee.id}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> &nbsp;
+    <mat-form-field appearance="fill">
+      <mat-label>Select Project ID</mat-label>
+      <mat-select formControlName="projectId" name="projectId">
+        <mat-option *ngFor="let project of projectData" [value]="project.id">
+          {{project.id}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field><br>
+    <button mat-raised-button color="primary">Submit</button>
+  </form>
