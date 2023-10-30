@@ -5,8 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatButtonModule } from '@angular/material/button';
 import { HomeModule } from './home/home.module';
-import { StoreModule } from '@ngrx/store';
-import { rootReducer } from '../reducer';
+import { AssignProjectModule } from './assign-project/assign-project.module';
+import { ProjectModule } from './add-project/project.module';
 
 @NgModule({
   declarations: [
@@ -16,9 +16,10 @@ import { rootReducer } from '../reducer';
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    HomeModule,
-    AppRoutingModule,
-    StoreModule.forRoot(rootReducer)
+   // HomeModule,
+    ProjectModule,
+    AssignProjectModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

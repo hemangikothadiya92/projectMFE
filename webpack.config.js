@@ -34,6 +34,8 @@ module.exports = {
       exposes: {
         //"./homeModule": ".//src/app/home/home.module.ts",
        "HomeModule": ".//src/app/home/home.module.ts",
+       "ProjectModule": ".//src/app/add-project/project.module.ts",
+       "AssignProjectModule": ".//src/app/assign-project/assign-project.module.ts"
       },
 
       // For hosts (please adjust)
