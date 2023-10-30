@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectDataService } from '../services/project-data.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { catchError, forkJoin, of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { RootReducerState, getData } from 'src/reducer';
+import { ProjectDataAction } from 'src/actions/project-action';
 
 @Component({
   selector: 'app-assign-project',
@@ -19,7 +22,7 @@ export class AssignProjectComponent implements OnInit {
   allProjectData: any;
 
 
-  constructor(private _projectDataService: ProjectDataService, private fb: FormBuilder) { }
+  constructor(private _projectDataService: ProjectDataService, private fb: FormBuilder, private store: Store<RootReducerState>) { }
 
   ngOnInit() {
     this.getProjectData();
@@ -77,6 +80,10 @@ export class AssignProjectComponent implements OnInit {
     this._projectDataService.employeeIdProjectIdMapping(employeeDetails)
       .subscribe((data: any) => {
         console.log("employee project mapping data: ", data);
+        this.store.dispatch(new ProjectDataAction({data}));
+      });
+      this.store.select(getData).subscribe((data: any) => {
+        console.log('get data from store: ', data);
       })
   }
 
