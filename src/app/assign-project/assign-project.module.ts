@@ -13,7 +13,7 @@ import { AssignProjectComponent } from './assign-project.component';
 import { ProjectDataService } from '../services/project-data.service';
 import { MatSelectModule } from '@angular/material/select';
 import { StoreModule } from '@ngrx/store';
-import { rootReducer } from 'src/reducer';
+import { rootReducer } from 'src/store/reducer';
 
 const routes: Routes = [
   {

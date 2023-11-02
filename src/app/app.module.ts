@@ -7,8 +7,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { HomeModule } from './home/home.module';
 import { AssignProjectModule } from './assign-project/assign-project.module';
 import { ProjectModule } from './add-project/project.module';
-import { StoreModule } from '@ngrx/store';
-import { rootReducer } from 'src/store/reducer';
 
 @NgModule({
   declarations: [
@@ -19,7 +17,7 @@ import { rootReducer } from 'src/store/reducer';
     BrowserAnimationsModule,
     MatButtonModule,
     ProjectModule,
-    AssignProjectModule,
+    // AssignProjectModule,
     AppRoutingModule
   ],
   providers: [],

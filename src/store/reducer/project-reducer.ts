@@ -1,6 +1,6 @@
 
-import { DATA_LIST } from 'src/actions/project-action';
-import { Action } from '../actions';
+import { DATA_LIST } from '../actions/project-action';
+import { Action } from '../actions/index';
 
 export interface ProjectReducerState {
     data: any[];

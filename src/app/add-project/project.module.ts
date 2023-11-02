@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ProjectDataService } from '../services/project-data.service';
 import { MatSelectModule } from '@angular/material/select';
-import { StoreModule } from '@ngrx/store';
 import { AddProjectComponent } from './add-project.component';
 
 const routes: Routes = [

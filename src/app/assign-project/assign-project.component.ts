@@ -3,8 +3,9 @@ import { ProjectDataService } from '../services/project-data.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { catchError, forkJoin, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { RootReducerState, getData } from 'src/reducer';
-import { ProjectDataAction } from 'src/actions/project-action';
+import { RootReducerState, getData } from 'src/store/reducer';
+import { ProjectDataAction } from '../../store/actions/project-action';
+import { EmployeeProjectDataMapping, Project } from '../project.interface';
 
 @Component({
   selector: 'app-assign-project',
@@ -24,12 +25,18 @@ export class AssignProjectComponent implements OnInit {
 
   constructor(private _projectDataService: ProjectDataService, private fb: FormBuilder, private store: Store<RootReducerState>) { }
 
+  /**
+   * Angular life cycle hook
+   */
   ngOnInit() {
     this.getProjectData();
     this.getEmployeeData();
     this.initialiseForm();
   }
 
+  /**
+   * Add project form initialise
+   */
   initialiseForm() {
     this.assignProjectForm = this.fb.group({
       employeeId: [''],
@@ -37,24 +44,30 @@ export class AssignProjectComponent implements OnInit {
     })
   }
 
+  /**
+   * get the all project data
+   */
   getProjectData() {
     this._projectDataService.getProjectData()
-      .subscribe((projects: any) => {
-        console.log("project data: ", projects);
+      .subscribe((projects: Project[]) => {
         this.projectData = projects;
       })
   }
 
+  /**
+   * get all employee data
+   */
   getEmployeeData() {
     this._projectDataService.getEmployeeData()
       .subscribe((employee: any) => {
-        console.log('employee data: ', employee);
         this.employeeData = employee;
       })
   }
 
+  /**
+   * when use click on the 'Submit' button employee and project API call parallelly.
+   */
   onSubmit() {
-    console.log("submitted form: ", this.assignProjectForm.value);
     const getEmployeeData =
       this._projectDataService.getEmployeeDataById(this.assignProjectForm.value.employeeId);
     const getProjectData = this._projectDataService.getProjectDataById(this.assignProjectForm.value.projectId);
@@ -67,22 +80,24 @@ export class AssignProjectComponent implements OnInit {
           this.allEmployeeData,
           this.allProjectData
         ] = res;
-        console.log('fork join res: ', res);
         this.employeeProjectMapping(res);
       });
     this.assignProjectForm.reset();
   }
 
+  /**
+   * get the data with employeeprojectmapping and store in the NGRX Store
+   * @param res 
+   */
   employeeProjectMapping(res: any) {
    let employeeDetails: any[] = [];
     employeeDetails.push(res[0]);
     employeeDetails[0]["projectDetails"] = res[1];
     this._projectDataService.employeeIdProjectIdMapping(employeeDetails)
-      .subscribe((data: any) => {
-        console.log("employee project mapping data: ", data);
+      .subscribe((data: EmployeeProjectDataMapping[]) => {
         this.store.dispatch(new ProjectDataAction({data}));
       });
-      this.store.select(getData).subscribe((data: any) => {
+      this.store.select(getData).subscribe((data: EmployeeProjectDataMapping[]) => {
         console.log('get data from store: ', data);
       })
   }
