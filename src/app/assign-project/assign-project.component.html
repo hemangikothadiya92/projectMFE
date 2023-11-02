@@ -6,8 +6,8 @@
             {{employee.id}}
           </mat-option>
         </mat-select>
-      </mat-form-field> &nbsp;
-    <mat-form-field appearance="fill">
+      </mat-form-field>
+    <mat-form-field appearance="fill" class="dropdown">
       <mat-label>Select Project ID</mat-label>
       <mat-select formControlName="projectId" name="projectId">
         <mat-option *ngFor="let project of projectData" [value]="project.id">
