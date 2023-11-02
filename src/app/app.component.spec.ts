@@ -23,6 +23,6 @@ describe('AppComponent', () => {
   it(`should have as title 'remoteapp2'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('remoteapp2');
+    expect(app.title).toEqual('ProjectMFE');
   });
 });

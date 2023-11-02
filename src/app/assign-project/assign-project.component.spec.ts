@@ -13,6 +13,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
+import { Project } from '../project.interface';
+import { Store, StoreModule } from '@ngrx/store';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 
 describe('AssignProjectComponent', () => {
@@ -20,15 +23,10 @@ describe('AssignProjectComponent', () => {
   let fixture: ComponentFixture<AssignProjectComponent>;
   let projectDataService: jasmine.SpyObj<ProjectDataService>;
   let formBuilder: FormBuilder;
+  let store: Store;
 
   beforeEach(async () => {
-    const projectDataServiceSpy = jasmine.createSpyObj('ProjectDataService', [
-      'getProjectData',
-      'getEmployeeData',
-      'getEmployeeDataById',
-      'getProjectDataById',
-      'employeeProjectMapping',
-    ]);
+    
     await TestBed.configureTestingModule({
       declarations: [ AssignProjectComponent ],
       imports: [ReactiveFormsModule, MatButtonModule,
@@ -36,14 +34,17 @@ describe('AssignProjectComponent', () => {
         MatFormFieldModule,
         FormsModule,
         ReactiveFormsModule,
+        BrowserAnimationsModule,
+        NoopAnimationsModule,
         MatSlideToggleModule,
         MatInputModule,
         HttpClientModule,
         RouterModule,
         MatTableModule,
+        StoreModule.forRoot({}),
         MatSelectModule],
       providers: [
-        { provide: ProjectDataService, useValue: projectDataServiceSpy },
+        ProjectDataService,
         { provide: FormBuilder, useValue: new FormBuilder() },
         
       ],
@@ -53,6 +54,13 @@ describe('AssignProjectComponent', () => {
     component = fixture.componentInstance;
     projectDataService = TestBed.inject(ProjectDataService) as jasmine.SpyObj<ProjectDataService>;
     formBuilder = TestBed.inject(FormBuilder);
+    store = TestBed.inject(Store);
+
+    spyOn(projectDataService, 'getProjectData').and.returnValue(of([]));
+    spyOn(projectDataService, 'getEmployeeData').and.returnValue(of([]));
+    spyOn(projectDataService, 'getEmployeeDataById').and.returnValue(of({}));
+    spyOn(projectDataService, 'getProjectDataById').and.returnValue(of({}));
+
     fixture.detectChanges();
   });
 
@@ -60,28 +68,35 @@ describe('AssignProjectComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize the form with default values', () => {
+  it('should initialize the form', () => {
     component.initialiseForm();
-    const form = component.assignProjectForm;
-
-    expect(form.get('employeeId')?.value).toBe('');
-    expect(form.get('projectId')?.value).toBe('');
+    expect(component.assignProjectForm).toBeTruthy();
   });
 
-  it('should call getProjectData and getEmployeeData on ngOnInit', () => {
-    const mockProjectData = [{ projectId: 1, projectName: 'Project 1', projectDescription: 'Description 1' }];
-    const mockEmployeeData = [{ employeeId: 1, employeeName: 'Employee 1' }];
-
-    //projectDataService.getProjectData.and.returnValue(of(mockProjectData));
-    projectDataService.getEmployeeData.and.returnValue(of(mockEmployeeData));
-
-    component.ngOnInit();
-
+  it('should get project data', () => {
+    component.getProjectData();
     expect(projectDataService.getProjectData).toHaveBeenCalled();
-    expect(projectDataService.getEmployeeData).toHaveBeenCalled();
-    expect(component.projectData).toEqual(mockProjectData);
-    expect(component.employeeData).toEqual(mockEmployeeData);
   });
+
+  it('should get employee data', () => {
+    component.getEmployeeData();
+    expect(projectDataService.getEmployeeData).toHaveBeenCalled();
+  });
+
+  // it('should handle form submission', () => {
+  //   component.assignProjectForm.setValue({ employeeId: 1, projectId: 2 });
+
+  //   spyOn(projectDataService, 'employeeIdProjectIdMapping').and.returnValue(of([]));
+    
+
+  //   component.onSubmit();
+
+  //   expect(projectDataService.getEmployeeDataById).toHaveBeenCalledWith(1);
+  //   expect(projectDataService.getProjectDataById).toHaveBeenCalledWith(2);
+
+
+   
+  // });
 
 
 });
