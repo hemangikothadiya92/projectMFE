@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { Project } from '../project.interface';
 import { Store, StoreModule } from '@ngrx/store';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ProjectDataAction } from 'src/store/actions/project-action';
 
 
 describe('AssignProjectComponent', () => {
@@ -83,20 +84,73 @@ describe('AssignProjectComponent', () => {
     expect(projectDataService.getEmployeeData).toHaveBeenCalled();
   });
 
-  // it('should handle form submission', () => {
-  //   component.assignProjectForm.setValue({ employeeId: 1, projectId: 2 });
+  it('should reset the form and call employeeProjectMapping on successful onSubmit', () => {
+    const employeeId = 1;
+    const projectId = 3;
+    const employeeData = [{
+      "employeeId": "",
+      "firstName": "test",
+      "lastName": "test123",
+      "email": "jdd@mail.com",
+      "mobile": "0987654321",
+      "address": "test address",
+      "active": true,
+      "id": 1
+    }];
+    const projectData = [{
+      "projectId": "",
+      "projectName": "test",
+      "projectDescription": "testing",
+      "id": 3
+    }];
 
-  //   spyOn(projectDataService, 'employeeIdProjectIdMapping').and.returnValue(of([]));
+    component.assignProjectForm.setValue({
+      employeeId,
+      projectId,
+    });
+
+    spyOn(component, 'employeeProjectMapping');
+
+    component.onSubmit();
+
+    expect(component.assignProjectForm.value.employeeId).toBe(null); 
+    expect(component.assignProjectForm.value.projectId).toBe(null);
+
+    expect(projectDataService.getEmployeeDataById).toHaveBeenCalledWith(employeeId);
+    expect(projectDataService.getProjectDataById).toHaveBeenCalledWith(projectId);
+
+  });
+
+  xit('should call employeeProjectMapping and dispatch the correct action', () => {
+    const res = [
+      {
+          "employeeId": "",
+          "firstName": "bren",
+          "lastName": "stone",
+          "email": "bren@yahoo.com",
+          "mobile": "8877665542",
+          "address": "strye street",
+          "active": true,
+          "id": 4,
+      },
+      {
+        "projectId": "",
+        "projectName": "test123",
+        "projectDescription": "testing1234",
+        "id": 4
+      }
+    ];
+    let employeeDetails: any[] = [];
+    employeeDetails.push(res[0]);
+    employeeDetails[0]['projectDetails'] = res[1];
+    spyOn(projectDataService, 'employeeIdProjectIdMapping').and.returnValue(of(employeeDetails));
+    spyOn(store, 'dispatch');
+    component.employeeProjectMapping(employeeDetails);
+
+    expect(projectDataService.employeeIdProjectIdMapping).toHaveBeenCalled();
+    expect(store.dispatch).toHaveBeenCalledWith(new ProjectDataAction({ data: employeeDetails }));
     
-
-  //   component.onSubmit();
-
-  //   expect(projectDataService.getEmployeeDataById).toHaveBeenCalledWith(1);
-  //   expect(projectDataService.getProjectDataById).toHaveBeenCalledWith(2);
-
-
-   
-  // });
+  });
 
 
 });

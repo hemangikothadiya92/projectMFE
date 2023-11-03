@@ -3,9 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddProjectComponent } from './add-project.component';
 import { ProjectDataService } from '../services/project-data.service';
 import { Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AddProjectComponent', () => {
   let component: AddProjectComponent;
@@ -18,7 +22,12 @@ describe('AddProjectComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
     await TestBed.configureTestingModule({
       declarations: [ AddProjectComponent ],
-      imports: [ReactiveFormsModule, HttpClientModule],
+      imports: [ReactiveFormsModule, HttpClientModule,  MatCardModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,],
       providers: [
         FormBuilder,
         ProjectDataService,
@@ -61,5 +70,19 @@ describe('AddProjectComponent', () => {
     component.onSubmitProjectData();
 
     expect(projectDataService.addProjectData).toHaveBeenCalledWith(projectData);
+  });
+
+  it('should navigate to "assign-project" on successful project data submission', () => {
+    const mockData = {
+      "projectId": "",
+      "projectName": "test123",
+      "projectDescription": "testing1234",
+    }
+    projectDataService.addProjectData.and.returnValue(of([mockData]));
+
+    component.onSubmitProjectData();
+
+    expect(projectDataService.addProjectData).toHaveBeenCalledWith(component.addProjectForm.value);
+    expect(router.navigateByUrl).toHaveBeenCalledWith('assign-project');
   });
 });
